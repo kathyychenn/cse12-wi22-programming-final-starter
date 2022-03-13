@@ -18,21 +18,24 @@ public class CSE12NaryTreeTester {
     private CSE12NaryTree<Integer> fiveNaryTree;
     private CSE12NaryTree<Integer> rootNaryTree;
     private CSE12NaryTree<Integer> emptyNaryTree;
-	//private MyLinkedList<String> threeStringList;
-
+    private CSE12NaryTree<Integer> cloneNaryTree;
+    
 	/**
 	 * Standard Test Fixture. An empty list, a list with one entry (0) and
 	 * a list with several entries (0,1,2)
 	 */
 	@Before
 	public void setUp() {
-		emptyNaryTree = new CSE12NaryTree<Integer>(5);
+		//empty tree
+        emptyNaryTree = new CSE12NaryTree<Integer>(5);
         emptyNaryTree.size = 0;
 
+        //5NaryTree with only a root
         rootNaryTree = new CSE12NaryTree<Integer>(5);
         rootNaryTree.root = this.rootNaryTree.new Node(9);
         rootNaryTree.size = 1;
 
+        //5NaryTree with one root and 5 of its children
         fiveNaryTree = new CSE12NaryTree<Integer>(5);
         fiveNaryTree.root = this.fiveNaryTree.new Node(9);
         fiveNaryTree.root.addChild(this.fiveNaryTree.new Node(3));
@@ -41,6 +44,16 @@ public class CSE12NaryTreeTester {
         fiveNaryTree.root.addChild(this.fiveNaryTree.new Node(2));
         fiveNaryTree.root.addChild(this.fiveNaryTree.new Node(8));
         fiveNaryTree.size = 6;
+
+        //5NaryTree with all same elements
+        cloneNaryTree = new CSE12NaryTree<Integer>(5);
+        cloneNaryTree.root = this.cloneNaryTree.new Node(2);
+        cloneNaryTree.root.addChild(this.cloneNaryTree.new Node(2));
+        cloneNaryTree.root.addChild(this.cloneNaryTree.new Node(2));
+        cloneNaryTree.root.addChild(this.cloneNaryTree.new Node(2));
+        cloneNaryTree.root.addChild(this.cloneNaryTree.new Node(2));
+        cloneNaryTree.root.addChild(this.cloneNaryTree.new Node(2));
+        cloneNaryTree.size = 6;
 	}
     
     /**
@@ -168,10 +181,32 @@ public class CSE12NaryTreeTester {
     }
 
     /**
-     * TODO: Add test case description
+     * Tests the add and contains methods on 5-ary tree where all nodes have 
+     * the same value. Different from previous tests because it ensures that
+     *  the NaryTree class can account for duplicates in the tree.
      */
     @Test
     public void testCustom(){
-        
+        //test Add
+        cloneNaryTree.add(2);
+        cloneNaryTree.add(2);
+
+        //manually access data of new node added
+        List<CSE12NaryTree<Integer>.Node> rootChildren = 
+        cloneNaryTree.root.getChildren();
+        CSE12NaryTree<Integer>.Node expected1 = 
+            rootChildren.get(0).getChildren().get(0);
+        CSE12NaryTree<Integer>.Node expected2 = 
+            rootChildren.get(0).getChildren().get(1);
+
+        assertEquals("2 is first child of first child of root", (Integer)2, 
+                    expected1.getData());
+        assertEquals("2 is second child of first child of root", (Integer)2, 
+                    expected2.getData());
+        assertEquals("size incremented", 8, cloneNaryTree.size);
+
+        //test contains
+        assertTrue("element contained in NaryTree", cloneNaryTree.contains(2));
+
     }
 }

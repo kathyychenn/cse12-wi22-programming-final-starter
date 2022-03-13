@@ -214,7 +214,7 @@ public class CSE12NaryTree<E extends Comparable<E>> {
             Node node = traversal.poll();
             heapTree.add(node.getData());
 
-            if(curr.getNumChildren()!=0){
+            if(node.getNumChildren()>0){
                 for(Node child: node.getChildren()){
                     traversal.add(child);
                 }
@@ -257,7 +257,8 @@ public class CSE12NaryTree<E extends Comparable<E>> {
      * @param nums - arrayList of elements to be percolated through
      * @param numsSize - size of arrayList to be percolated through
      */
-    private void MinHeapPercolateDown(int nodeIndex, ArrayList<E> nums, int numsSize){
+    private void MinHeapPercolateDown(int nodeIndex, ArrayList<E> nums, 
+                                      int numsSize){
         int childIndex = 2 * nodeIndex + 1;
         E value = nums.get(nodeIndex);
         
